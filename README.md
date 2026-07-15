@@ -66,6 +66,52 @@ All tools below are compatible with Fish shell and Starship prompt:
 - [`grc`](https://github.com/garabik/grc) to colorize command's outputs;
 - [`starship.rs`](https://starship.rs) the prompt we are using (Fish is the shell);
 
+## OpenCode
+
+This dotfiles repo manages the OpenCode configuration under `.config/opencode/`.
+It includes profiles, the `rtk.ts` plugin, `oh-my-opencode-slim` presets,
+and non-GSD skills. GSD-related generated files are ignored.
+
+### Install
+
+After running the bootstrap script and `brew bundle`, set up OpenCode:
+
+```console
+cd ~/.dotfiles
+./script/bootstrap.fish
+
+cd ~/.config/opencode
+npm install
+
+opencode plugin install -g oh-my-opencode-slim
+opencode plugin install -g @warp-dot-dev/opencode-warp
+opencode plugin install -g opencode-openai-codex-auth
+```
+
+### Profiles
+
+OCX profiles launch different `oh-my-opencode-slim` presets:
+
+```console
+ocx opencode -p free
+ocx opencode -p kimi
+ocx opencode -p kimi-superpowers
+ocx opencode -p sol-kimi
+```
+
+See `.config/opencode/PROFILES.md` for how the profile → preset mapping works.
+
+### GSD-core
+
+To install GSD workflows and agents on top of this OpenCode setup:
+
+```console
+npx -y @opengsd/gsd-core@latest --opencode --global
+```
+
+GSD writes ignored files into `~/.config/opencode/` (agents, command, gsd-core,
+hooks, etc.), so they are not tracked in this repo.
+
 ## Mac Setup
 
 Facing the setup of a new machine (or the need to reinstall after a fresh OS install or the like), here's a very brief and basic list of the usual suspects, related to the setup of a mac computer to work with (mostly related to a scripting languages context).
