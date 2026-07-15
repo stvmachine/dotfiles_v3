@@ -27,6 +27,8 @@ brew "yarn"
 brew "nvm"
 brew "pnpm"
 cask "claude-code"
+brew "herdr"
+brew "opencode"
 
 # Others tools
 cask "docker-desktop"
