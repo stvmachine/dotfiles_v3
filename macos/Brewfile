@@ -29,6 +29,7 @@ brew "pnpm"
 cask "claude-code"
 brew "herdr"
 brew "opencode"
+brew "rtk"
 
 # Others tools
 cask "docker-desktop"
