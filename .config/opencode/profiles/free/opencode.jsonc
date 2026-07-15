@@ -1,0 +1,7 @@
+{
+	"plugin": [
+		"@warp-dot-dev/opencode-warp",
+		"oh-my-opencode-slim",
+		"opencode-herdr",
+	],
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# OCX profile wrapper: kimi-superpowers preset
+export OH_MY_OPENCODE_SLIM_PRESET=kimi
+exec opencode "$@"

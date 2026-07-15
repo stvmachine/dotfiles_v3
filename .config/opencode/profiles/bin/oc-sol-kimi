@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# OCX profile wrapper: sol-kimi preset
+export OH_MY_OPENCODE_SLIM_PRESET=sol-kimi
+exec opencode "$@"

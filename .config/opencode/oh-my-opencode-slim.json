@@ -1,0 +1,672 @@
+{
+  "$schema": "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json",
+  "preset": "kimi",
+  "presets": {
+    "sol-kimi": {
+      "orchestrator": {
+        "model": "openai/gpt-5.6-sol",
+        "variant": "xhigh",
+        "skills": [
+          "*"
+        ],
+        "mcps": [
+          "*",
+          "!context7"
+        ]
+      },
+      "oracle": {
+        "model": "deepseek/deepseek-v4-pro",
+        "variant": "max",
+        "skills": [
+          "simplify"
+        ],
+        "mcps": []
+      },
+      "council": {
+        "model": "deepseek/deepseek-v4-pro",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "librarian": {
+        "model": "deepseek/deepseek-v4-flash",
+        "skills": [],
+        "mcps": [
+          "websearch",
+          "context7",
+          "gh_grep"
+        ]
+      },
+      "explorer": {
+        "model": "deepseek/deepseek-v4-pro",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "designer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "fixer": {
+        "model": "deepseek/deepseek-v4-flash",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "observer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ui-checker": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-advisor-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ai-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-assumptions-analyzer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-code-fixer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-code-reviewer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-codebase-mapper": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-debug-session-manager": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-debugger": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-doc-classifier": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-doc-synthesizer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-doc-verifier": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-doc-writer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-domain-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-eval-auditor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-eval-planner": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-executor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-framework-selector": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-integration-checker": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-intel-updater": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-mempalace-curator": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-nyquist-auditor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-pattern-mapper": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-phase-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-plan-checker": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-planner": {
+        "model": "openai/gpt-5.6-sol",
+        "variant": "xhigh",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-project-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-research-synthesizer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-roadmapper": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-security-auditor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ui-auditor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ui-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-user-profiler": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-verifier": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      }
+    },
+    "go-deep-kimi": {
+      "orchestrator": {
+        "model": "opencode-go/glm-5.2",
+        "skills": [
+          "*"
+        ],
+        "mcps": [
+          "*",
+          "!context7"
+        ]
+      },
+      "oracle": {
+        "model": "deepseek/deepseek-v4-pro",
+        "variant": "max",
+        "skills": [
+          "simplify"
+        ],
+        "mcps": []
+      },
+      "council": {
+        "model": "deepseek/deepseek-v4-pro",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "librarian": {
+        "model": "deepseek/deepseek-v4-flash",
+        "skills": [],
+        "mcps": [
+          "websearch",
+          "context7",
+          "gh_grep"
+        ]
+      },
+      "explorer": {
+        "model": "deepseek/deepseek-v4-pro",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "designer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "fixer": {
+        "model": "deepseek/deepseek-v4-flash",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "observer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ui-checker": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-advisor-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ai-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-assumptions-analyzer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-code-fixer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-code-reviewer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-codebase-mapper": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-debug-session-manager": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-debugger": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-doc-classifier": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-doc-synthesizer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-doc-verifier": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-doc-writer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-domain-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-eval-auditor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-eval-planner": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-executor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-framework-selector": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-integration-checker": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-intel-updater": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-mempalace-curator": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-nyquist-auditor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-pattern-mapper": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-phase-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-plan-checker": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-planner": {
+        "model": "opencode-go/glm-5.2",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-project-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-research-synthesizer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-roadmapper": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-security-auditor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ui-auditor": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ui-researcher": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-user-profiler": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-verifier": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      }
+    },
+    "kimi": {
+      "orchestrator": {
+        "model": "kimi-for-coding/k2p7",
+        "skills": [
+          "*"
+        ],
+        "mcps": [
+          "*",
+          "!context7"
+        ]
+      },
+      "oracle": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "max",
+        "skills": [
+          "simplify"
+        ],
+        "mcps": []
+      },
+      "council": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "librarian": {
+        "model": "kimi-for-coding/k2p7",
+        "skills": [],
+        "mcps": [
+          "websearch",
+          "context7",
+          "gh_grep"
+        ]
+      },
+      "explorer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "designer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "fixer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "observer": {
+        "model": "kimi-for-coding/k2p7",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      }
+    },
+    "free": {
+      "orchestrator": {
+        "model": "opencode/big-pickle",
+        "skills": [
+          "*"
+        ],
+        "mcps": [
+          "*",
+          "!context7"
+        ]
+      },
+      "oracle": {
+        "model": "opencode/nemotron-3-ultra-free",
+        "variant": "high",
+        "skills": [
+          "simplify"
+        ],
+        "mcps": []
+      },
+      "council": {
+        "model": "opencode/mimo-v2.5-free",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "librarian": {
+        "model": "opencode/deepseek-v4-flash-free",
+        "skills": [],
+        "mcps": [
+          "websearch",
+          "context7",
+          "gh_grep"
+        ]
+      },
+      "explorer": {
+        "model": "opencode/deepseek-v4-flash-free",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "designer": {
+        "model": "opencode/mimo-v2.5-free",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "fixer": {
+        "model": "opencode/deepseek-v4-flash-free",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "observer": {
+        "model": "opencode/big-pickle",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      },
+      "gsd-ui-checker": {
+        "model": "opencode/north-mini-code-free",
+        "variant": "high",
+        "skills": [],
+        "mcps": []
+      }
+    }
+  },
+  "multiplexer": {
+    "type": "auto",
+    "layout": "main-vertical",
+    "main_pane_size": 60
+  },
+  "disabled_agents": [],
+  "companion": {
+    "enabled": true,
+    "position": "bottom-right",
+    "size": "medium",
+    "gifPack": "default",
+    "loopStyle": "classic",
+    "speed": 1,
+    "debug": false
+  }
+}

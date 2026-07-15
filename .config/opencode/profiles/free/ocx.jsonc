@@ -1,0 +1,14 @@
+{
+	"$schema": "https://ocx.kdco.dev/schemas/profile.json",
+	"registries": {},
+	"renameWindow": true,
+	"bin": "/Users/estvmachine/.config/opencode/profiles/bin/oc-free",
+	"exclude": [
+		"**/CLAUDE.md",
+		"**/CONTEXT.md",
+		"**/.opencode/**",
+		"**/opencode.jsonc",
+		"**/opencode.json"
+	],
+	"include": []
+}

@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+package-lock.json
+bun.lock
+
+# GSD (not tracked in this dotfiles config)
+agents
+command
+gsd-core
+gsd-file-manifest.json
+gsd-install-state.json
+gsd-migration-journal
+hooks
+scripts
+skills/gsd-*
+.gsd-profile
+
+# Backups and metadata
+*.bak-*
+.DS_Store
