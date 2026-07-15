@@ -17,7 +17,7 @@ First, make sure you have all those things installed:
 Then, run these steps:
 
 ```console
-git clone https://github.com/stvmachine/dotfiles_v2 ~/.dotfiles
+git clone https://github.com/stvmachine/dotfiles_v3 ~/.dotfiles
 cd ~/.dotfiles
 ./script/bootstrap.fish
 ```
