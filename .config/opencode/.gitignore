@@ -18,3 +18,4 @@ skills/gsd-*
 # Backups and metadata
 *.bak-*
 .DS_Store
+.oh-my-opencode-slim
