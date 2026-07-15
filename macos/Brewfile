@@ -1,0 +1,72 @@
+tap "buo/cask-upgrade"
+
+# Custom fonts
+cask "font-droid-sans-mono-nerd-font"
+
+# Recommended by repo
+# Special attention to fish and starship
+brew "curl"
+brew "git"
+brew "fish"
+brew "starship"
+
+# Text editors/IDEs
+cask "warp"
+cask "visual-studio-code"
+cask "cursor"
+
+# Dev tools
+# Ruby
+brew "rbenv"
+brew "ruby"
+# Python
+# brew "pyenv"
+# brew "pipenv"
+brew "yarn"
+# Node
+brew "nvm"
+brew "pnpm"
+cask "claude-code"
+
+# Others tools
+cask "docker-desktop"
+brew "direnv"
+brew "commitizen"
+
+# Productivity
+cask "alfred"
+cask "rectangle"
+cask "fork"
+
+# Browsers
+cask "brave-browser"
+cask "google-chrome"
+cask "firefox@developer-edition"
+cask "comet" 
+
+# Work Tools
+cask "1password"
+cask "zoom"
+cask "slack"
+
+## React Native
+cask "android-studio"
+## OpenJDK Azul Zulu: works for both Intel and M1 macs
+cask "zulu@17"
+brew "watchman"
+
+## Debuggers
+cask "react-native-debugger"
+# cask "flipper"
+
+## Designer tools
+cask "figma"
+
+## DB managers
+# cask "dbeaver-community"
+# cask "mongodb-compass"
+
+## API development
+# cask "insomnia"
+# cask "postman"
+
