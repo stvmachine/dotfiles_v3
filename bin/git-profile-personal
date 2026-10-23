@@ -1,10 +1,37 @@
 #!/usr/bin/env fish
 
-# Switch to personal git profile (stvmachine)
-# Updates remotes to use personal SSH key (github-personal)
+# Switch to personal git profile (updates remotes to use personal SSH key)
+# Identity comes from environment or interactive prompt; never hardcoded.
+# Required: GIT_PERSONAL_NAME, GIT_PERSONAL_EMAIL
 
-git config --local user.name "stvmachine"
-git config --local user.email "campos.esteban@gmail.com"
+if not set -q GIT_PERSONAL_NAME
+	# Shebang scripts are never "interactive" for `status is-interactive`,
+	# so just attempt the prompt: `read` succeeds on a terminal or a pipe
+	# and fails when stdin is closed (/dev/null).
+	read -P "Personal git user.name: " GIT_PERSONAL_NAME
+	or begin
+		echo "GIT_PERSONAL_NAME is not set" >&2
+		exit 1
+	end
+end
+if test -z "$GIT_PERSONAL_NAME"
+	echo "GIT_PERSONAL_NAME must not be empty" >&2
+	exit 1
+end
+if not set -q GIT_PERSONAL_EMAIL
+	read -P "Personal git user.email: " GIT_PERSONAL_EMAIL
+	or begin
+		echo "GIT_PERSONAL_EMAIL is not set" >&2
+		exit 1
+	end
+end
+if test -z "$GIT_PERSONAL_EMAIL"
+	echo "GIT_PERSONAL_EMAIL must not be empty" >&2
+	exit 1
+end
+
+git config --local user.name "$GIT_PERSONAL_NAME"
+git config --local user.email "$GIT_PERSONAL_EMAIL"
 
 # Update existing remotes to use personal SSH key (github-personal)
 for remote in (git remote)
@@ -27,4 +54,4 @@ for remote in (git remote)
 	end
 end
 
-echo "Switched to personal git profile: stvmachine <campos.esteban@gmail.com>"
+echo "Switched to personal git profile: $GIT_PERSONAL_NAME <$GIT_PERSONAL_EMAIL>"

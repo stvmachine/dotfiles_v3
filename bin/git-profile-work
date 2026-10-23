@@ -1,10 +1,37 @@
 #!/usr/bin/env fish
 
 # Switch to work git profile (updates remotes to use github-work SSH key)
-# Note: Git user.name and user.email are set automatically
+# Identity comes from environment or interactive prompt; never hardcoded.
+# Required: GIT_WORK_NAME, GIT_WORK_EMAIL
 
-git config --local user.name "ecampos-medtasker"
-git config --local user.email "ecampos@medtasker.com"
+if not set -q GIT_WORK_NAME
+	# Shebang scripts are never "interactive" for `status is-interactive`,
+	# so just attempt the prompt: `read` succeeds on a terminal or a pipe
+	# and fails when stdin is closed (/dev/null).
+	read -P "Work git user.name: " GIT_WORK_NAME
+	or begin
+		echo "GIT_WORK_NAME is not set" >&2
+		exit 1
+	end
+end
+if test -z "$GIT_WORK_NAME"
+	echo "GIT_WORK_NAME must not be empty" >&2
+	exit 1
+end
+if not set -q GIT_WORK_EMAIL
+	read -P "Work git user.email: " GIT_WORK_EMAIL
+	or begin
+		echo "GIT_WORK_EMAIL is not set" >&2
+		exit 1
+	end
+end
+if test -z "$GIT_WORK_EMAIL"
+	echo "GIT_WORK_EMAIL must not be empty" >&2
+	exit 1
+end
+
+git config --local user.name "$GIT_WORK_NAME"
+git config --local user.email "$GIT_WORK_EMAIL"
 
 # Update existing remotes to use work SSH key (github-work)
 for remote in (git remote)
@@ -32,4 +59,4 @@ for remote in (git remote)
 	end
 end
 
-echo "Switched to work git profile: ecampos-medtasker <ecampos@medtasker.com>"
+echo "Switched to work git profile: $GIT_WORK_NAME <$GIT_WORK_EMAIL>"

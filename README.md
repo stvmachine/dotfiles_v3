@@ -56,6 +56,22 @@ The bootstrap script would have created a bunch of symlinks that will now be bro
 You will have to investigate those manually.
 In cases a file already existed, the boostrap script should have created a `.backup` file with the same name.
 
+## Git profiles
+
+Per-repo work/personal identities. `git-profile-work` sets local `user.name`/`user.email` and rewrites remotes to `git@github-work:...`; `git-profile-personal` does the same for the personal account with `git@github-personal:...`. Identities come from `GIT_WORK_*` / `GIT_PERSONAL_*` env vars (or a prompt when unset); nothing is hardcoded.
+
+Prerequisites: run `./script/bootstrap.fish` (puts `bin/` on PATH), set the four `GIT_*` vars (or answer the prompt), and configure the `github-work` / `github-personal` SSH hosts with their keys (`add-github-profile work|personal` does keys plus hosts).
+
+```console
+cd <repo>
+git-profile-work  # or: gwork
+git config user.name
+git remote -v
+```
+
+Fresh clones need the profile applied once after cloning, since remotes default to `github.com`/HTTPS.
+`git-profile-work` also converts `github-personal` remotes to work; `git-profile-personal` does not convert `github-work` remotes back.
+
 ## Recommended Software
 
 All tools below are compatible with Fish shell and Starship prompt:
