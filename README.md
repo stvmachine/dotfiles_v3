@@ -56,11 +56,50 @@ The bootstrap script would have created a bunch of symlinks that will now be bro
 You will have to investigate those manually.
 In cases a file already existed, the boostrap script should have created a `.backup` file with the same name.
 
+## SSH keys / GitHub
+
+GitHub access uses one SSH key per identity, selected via SSH host aliases
+(`github-personal`, `github-work`) declared in `ssh/config.dotfiles`. Private
+keys live in `~/.ssh/` and are **never committed** — only the host config is
+version-controlled here.
+
+### Add a key (first time, or on a new machine)
+
+```console
+add-github-profile personal "Your Name" "you@example.com"
+# or: add-github-profile work "Your Name" "you@work.example.com"
+```
+
+This generates the key (`~/.ssh/id_ed25519` for personal,
+`~/.ssh/id_work_ed25519` for work), loads it into the macOS keychain, persists
+the `GIT_PERSONAL_*` / `GIT_WORK_*` identity, and appends the matching `Host`
+block to `ssh/config.dotfiles` if it isn't already there.
+
+Copy the public key and upload it to GitHub
+(**Settings → SSH and GPG keys → New SSH key**):
+
+```console
+pbcopy < ~/.ssh/id_ed25519.pub      # or: ~/.ssh/id_work_ed25519.pub
+```
+
+> The bundled `pubkey` helper runs `ssh-add -L | pbcopy`, which copies every
+> key in the agent. On a fresh machine that's fine, but `pbcopy < <key>.pub`
+> is unambiguous when multiple keys are loaded.
+
+Then verify:
+
+```console
+ssh -T git@github-work        # or: git@github-personal
+```
+
+Run `add-github-profile` once per identity per machine. Re-running is safe —
+it skips keys and hosts that already exist.
+
 ## Git profiles
 
 Per-repo work/personal identities. `git-profile-work` sets local `user.name`/`user.email` and rewrites remotes to `git@github-work:...`; `git-profile-personal` does the same for the personal account with `git@github-personal:...`. Identities come from `GIT_WORK_*` / `GIT_PERSONAL_*` env vars (or a prompt when unset); nothing is hardcoded.
 
-Prerequisites: run `./script/bootstrap.fish` (puts `bin/` on PATH), set the four `GIT_*` vars (or answer the prompt), and configure the `github-work` / `github-personal` SSH hosts with their keys (`add-github-profile work|personal` does keys plus hosts).
+Prerequisites: run `./script/bootstrap.fish` (puts `bin/` on PATH), and set up the `github-work` / `github-personal` SSH keys — see [SSH keys / GitHub](#ssh-keys--github) (`add-github-profile work|personal` does keys plus hosts).
 
 ```console
 cd <repo>

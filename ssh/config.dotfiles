@@ -1,4 +1,7 @@
 # vi: ft=sshconfig
+# Host aliases below select which key/identity git uses (git@github-work:...).
+# Keys themselves live in ~/.ssh/ and are NOT committed. Add/rotate a key with:
+#   add-github-profile work|personal <name> <email>   (see README "SSH keys / GitHub")
 
 Host *
 	ServerAliveInterval 60

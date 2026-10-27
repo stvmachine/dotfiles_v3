@@ -4,3 +4,10 @@ dist
 **/.DS_Store
 .opencode
 .opencode.json
+
+# SSH private keys must never be committed (keys live in ~/.ssh, not here)
+ssh/id_*
+ssh/*.pub
+ssh/known_hosts
+ssh/authorized_keys
+ssh/ssh_auth_sock
