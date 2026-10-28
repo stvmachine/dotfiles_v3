@@ -37,6 +37,7 @@ cask "zed"
 cask "docker-desktop"
 brew "direnv"
 brew "commitizen"
+cask "processspy"
 
 # Productivity
 cask "alfred"
@@ -48,7 +49,7 @@ cask "fork"
 cask "brave-browser"
 cask "google-chrome"
 cask "firefox@developer-edition"
-cask "comet" 
+cask "comet"
 
 # Work Tools
 cask "1password"
@@ -75,4 +76,3 @@ cask "figma"
 ## API development
 # cask "insomnia"
 # cask "postman"
-
