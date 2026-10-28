@@ -2,16 +2,15 @@
 #
 # Install the opencode + ocx monorepo:
 #   1. Clone (or update) stvmachine/opencode-config into ~/.config/opencode.
-#   2. Symlink ~/.config/ocx to the monorepo's ocx/ subdir.
-#   3. Rebuild the generated preset configs.
-#   4. Install ocx (OCX 3 preview) via Bun's global bin.
+#   2. Rebuild the generated preset configs and copy the profiles into
+#      ~/.config/ocx/profiles/.
+#   3. Install ocx (OCX 3 preview) via Bun's global bin.
 #
 # The monorepo holds both the OpenCode config (repo root) and the OCX profiles
 # (ocx/ subdir). Runtime state is gitignored via the repo's .gitignore.
 
 set -q DOTFILES; or set DOTFILES ~/.dotfiles
 set home_opencode $HOME/.config/opencode
-set home_ocx $HOME/.config/ocx
 set repo git@github-personal:stvmachine/opencode-config.git
 
 function oc_is_ours -a dir
@@ -47,14 +46,9 @@ else
 		or echo "  WARN: pull failed (offline?); keeping current checkout" >&2
 end
 
-# Symlink ~/.config/ocx to the monorepo's ocx/ subdir.
-if not test -L $home_ocx; or test (readlink $home_ocx) != "$home_opencode/ocx"
-	echo "  linking $home_ocx -> $home_opencode/ocx"
-	rm -rf $home_ocx
-	ln -s $home_opencode/ocx $home_ocx
-end
-
-# Rebuild the generated preset configs from presets/*.json (node/bun, no deps).
+# Rebuild the generated preset configs from presets/*.json (node/bun, no deps),
+# then copy the profiles into ~/.config/ocx/profiles/. OCX 3 rejects symlinks on
+# its managed path, so this replaces the old ~/.config/ocx symlink with a real dir.
 if test -f $home_opencode/scripts/build-presets.js
 	bun $home_opencode/scripts/build-presets.js
 		or echo "  WARN: build-presets.js failed" >&2
