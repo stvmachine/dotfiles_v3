@@ -1,119 +1,84 @@
 #!/bin/sh
 # Sets reasonable macOS defaults.
 #
-# Or, in other words, set shit how I like in macOS.
+# Derived from Nix darwin defaults configuration:
+# https://github.com/caarlos0/dotfiles/blob/2025.6.2/machines/shared/darwin.nix
 #
-# The original idea (and a couple settings) were grabbed from:
-#   https://github.com/mathiasbynens/dotfiles/blob/master/.osx
-# More from:
-#    https://gist.github.com/brandonb927/3195465
-#
-# Run ./set-defaults.sh and you'll be good to go.
+# Run ./macos/set-defaults.sh and you'll be good to go.
+
 if [ "$(uname -s)" != "Darwin" ]; then
-	exit 0
+  exit 0
 fi
 
 set +e
 
-disable_agent() {
-	mv "$1" "$1_DISABLED" >/dev/null 2>&1 ||
-		sudo mv "$1" "$1_DISABLED" >/dev/null 2>&1
-}
-
-unload_agent() {
-	launchctl unload -w "$1" >/dev/null 2>&1
-}
-
 sudo -v
+
+host="$(hostname -s)"
 
 echo ""
 echo "› System:"
 echo "  › Disable press-and-hold for keys in favor of key repeat"
 defaults write -g ApplePressAndHoldEnabled -bool false
 
-echo "  › Use AirDrop over every interface"
-defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
-
-echo "  › Show the ~/Library folder"
-chflags nohidden ~/Library
-
-echo "  › Show the /Volumes folder"
-sudo chflags nohidden /Volumes
-
 echo "  › Set a really fast key repeat"
 defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
-echo "  › Enable text replacement almost everywhere"
-defaults write -g WebAutomaticTextReplacementEnabled -bool true
+echo "  › Show scrollbars automatically"
+defaults write NSGlobalDomain AppleShowScrollBars -string "Automatic"
 
-echo "  › Turn off keyboard illumination when computer is not used for 5 minutes"
-defaults write com.apple.BezelServices kDimTime -int 300
+echo "  › Clicking the scrollbar jumps to the spot that was clicked"
+defaults write NSGlobalDomain AppleScrollerPagingBehavior -bool true
 
-echo "  › Require password immediately after sleep or screen saver begins"
-defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
+echo "  › Double-clicking a title bar fills the window"
+defaults write NSGlobalDomain AppleActionOnDoubleClick -string "Fill"
 
-echo "  › Always show scrollbars"
-defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
-# Possible values: `WhenScrolling`, `Automatic` and `Always`
-
-echo "  › Disable Dashboard"
-defaults write com.apple.dashboard mcx-disabled -bool true
-
-echo "  › Don't automatically rearrange Spaces based on most recent use"
-defaults write com.apple.dock mru-spaces -bool false
+echo "  › Tint window background with wallpaper color"
+defaults write NSGlobalDomain AppleReduceDesktopTinting -bool false
 
 echo "  › Increase the window resize speed for Cocoa applications"
-defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+defaults write NSGlobalDomain NSWindowResizeTime -float 0.1
 
-echo "  › Disable smart quotes and smart dashes as they're annoying when typing code"
+echo "  › Disable smart quotes, smart dashes, capitalization, period substitution, and auto-correct"
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
-
-echo "  › Disable auto-correct"
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
-echo "  › Set up trackpad & mouse speed to a reasonable number"
-defaults write -g com.apple.trackpad.scaling 2
-defaults write -g com.apple.mouse.scaling 2.5
-
-echo "  › Avoid the creation of .DS_Store files on network volumes"
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-
-echo "  › Disable the 'Are you sure you want to open this application?' dialog"
-defaults write com.apple.LaunchServices LSQuarantine -bool false
+echo "  › Disable web automatic spelling correction"
+defaults write -g WebAutomaticSpellingCorrectionEnabled -bool false
 
 echo "  › Set dark interface style"
 defaults write NSGlobalDomain AppleInterfaceStyle -string "Dark"
 
-echo "  › Set graphite appearance"
-defaults write NSGlobalDomain AppleAquaColorVariant -int 6
+echo "  › Set accent color to blue"
+defaults write -g AppleAccentColor -int 4
+defaults write -g AppleAquaColorVariant -int 1
 
-echo "  › Set graphite highlight color"
-defaults write NSGlobalDomain AppleHighlightColor -string "0.847059 0.847059 0.862745"
+echo "  › Save to disk by default, instead of iCloud"
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
-echo "  › Show battery percent"
-defaults write com.apple.menuextra.battery ShowPercent -bool true
+echo "  › Keep menu bar visible"
+defaults write NSGlobalDomain _HIHideMenuBar -bool false
 
-echo "  › Speed up wake from sleep to 24 hours from an hour"
-# http://www.cultofmac.com/221392/quick-hack-speeds-up-retina-macbooks-wake-from-sleep-os-x-tips/
-sudo pmset -a standbydelay 86400
+echo "  › Show Bluetooth icon in menu bar"
+defaults write com.apple.systemuiserver menuExtras -array-add "/System/Library/CoreServices/Menu Extras/Bluetooth.menu"
 
-echo "  › Removing duplicates in the 'Open With' menu"
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister \
-	-kill -r -domain local -domain system -domain user
+echo "  › Set springing delay to 0"
+defaults write -g "com.apple.springing.delay" -float 0.0
 
-#############################
+echo "  › Require password immediately after sleep or screen saver begins"
+defaults write com.apple.screensaver askForPassword -bool true
+defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-echo ""
-echo "› Finder:"
-echo "  › Always open everything in Finder's list view"
-defaults write com.apple.Finder FXPreferredViewStyle Nlsv
+echo "  › Don't avoid creating .DS_Store files on network volumes"
+# Note: This is different from the typical setup - allows .DS_Store on network volumes
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool false
 
-echo "  › Set the Finder prefs for showing a few different volumes on the Desktop"
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+echo "  › Keep quarantine enabled for the 'Are you sure you want to open this application?' dialog"
+defaults write com.apple.LaunchServices LSQuarantine -bool true
 
 echo "  › Expand save panel by default"
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
@@ -121,17 +86,45 @@ defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 echo "  › Set sidebar icon size to small"
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
 
-echo "  › Show status bar"
-defaults write com.apple.finder ShowStatusBar -bool true
+echo "  › Enable WebKit developer extras"
+defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
-echo "  › Show path bar"
-defaults write com.apple.finder ShowPathbar -bool true
+echo "  › Globe/fn key switches input source"
+defaults write com.apple.HIToolbox AppleFnUsageType -int 1
 
-echo "  › Disable the warning before emptying the Trash"
-defaults write com.apple.finder WarnOnEmptyTrash -bool false
+echo "  › Show AM/PM and day of week in the menu bar clock, but not the date"
+defaults write com.apple.menuextra.clock ShowAMPM -bool true
+defaults write com.apple.menuextra.clock ShowDate -int 0
+defaults write com.apple.menuextra.clock ShowDayOfWeek -bool true
 
-echo "  › Save to disk by default, instead of iCloud"
-defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+echo "  › Show battery, clock, wi-fi and focus modes in the menu bar"
+defaults write com.apple.controlcenter "NSStatusItem VisibleCC Battery" -bool true
+defaults write com.apple.controlcenter "NSStatusItem VisibleCC Clock" -bool true
+defaults write com.apple.controlcenter "NSStatusItem VisibleCC WiFi" -bool true
+defaults write com.apple.controlcenter "NSStatusItem VisibleCC FocusModes" -bool true
+defaults write com.apple.controlcenter "NSStatusItem VisibleCC BentoBox-0" -bool true
+
+echo "  › No margins around tiled windows"
+defaults write com.apple.WindowManager EnableTiledWindowMargins -bool false
+
+echo "  › Hide desktop icons until the wallpaper is clicked"
+defaults write com.apple.WindowManager HideDesktop -bool true
+
+#############################
+
+echo ""
+echo "› Finder:"
+echo "  › Always open everything in Finder's icon view"
+defaults write com.apple.finder FXPreferredViewStyle -string "icnv"
+
+echo "  › Sort folders before files"
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+
+echo "  › New windows open in the home folder"
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
+
+echo "  › Search the current folder by default"
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
 echo "  › Display full POSIX path as Finder window title"
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
@@ -139,163 +132,116 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 echo "  › Disable the warning when changing a file extension"
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
+echo "  › Show all files"
+defaults write com.apple.finder AppleShowAllFiles -bool true
+
+echo "  › Show status bar"
+defaults write com.apple.finder ShowStatusBar -bool true
+
+echo "  › Show path bar"
+defaults write com.apple.finder ShowPathbar -bool true
+
+echo "  › Don't show hard drives on desktop"
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
+
+echo "  › Don't show external hard drives on desktop"
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool false
+
+echo "  › Don't show removable media on desktop"
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
+
+echo "  › Don't keep the desktop and documents in iCloud Drive"
+defaults write com.apple.finder FXICloudDriveDesktop -bool false
+
+echo "  › Keep the warning before emptying the Trash"
+defaults write com.apple.finder WarnOnEmptyTrash -bool true
+
 #############################
 
 echo ""
 echo "› Photos:"
-echo "  › Disable it from starting everytime a device is plugged in"
+echo "  › Disable it from starting every time a device is plugged in"
 defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
 #############################
 
-echo ""
-echo "› Browsers:"
-echo "  › Hide Safari's bookmark bar"
-defaults write com.apple.Safari ShowFavoritesBar -bool false
-
-echo "  › Set up Safari for development"
-defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
-defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
-
-echo "  › Disable the annoying backswipe in Chrome"
-defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool false
-
-#############################
 
 echo ""
-echo "› Dock"
-echo "  › Setting the icon size of Dock items to 45 pixels for optimal size/screen-realestate"
-defaults write com.apple.dock tilesize -int 45
-
-echo "  › Speeding up Mission Control animations and grouping windows by application"
-defaults write com.apple.dock expose-animation-duration -float 0.1
-defaults write com.apple.dock expose-group-by-app -bool true
-
-echo "  › Remove the auto-hiding Dock delay"
-defaults write com.apple.dock autohide-delay -float 0
-
-echo "  › Remove the animation when hiding/showing the Dock"
-defaults write com.apple.dock autohide-time-modifier -float 0
-
-echo "  › Show hidden apps in the Dock"
-defaults write com.apple.Dock showhidden -bool true
+echo "› Dock:"
+echo " > Remove all dock preferences"
+defaults write com.apple.dock persistent-apps -array
 
 echo "  › Automatically hide and show the Dock"
 defaults write com.apple.dock autohide -bool true
 
+echo "  › Remove the auto-hiding Dock delay"
+defaults write com.apple.dock autohide-delay -float 0
+
+echo "  › Set Dock orientation to bottom"
+defaults write com.apple.dock orientation -string "bottom"
+
+echo "  › Setting the icon size of Dock items to 42 pixels"
+defaults write com.apple.dock tilesize -int 42
+
+echo "  › Show hidden apps in the Dock"
+defaults write com.apple.dock showhidden -bool true
+
+echo "  › Don't show recent applications in Dock"
+defaults write com.apple.dock show-recents -bool false
+
+echo "  › Show process indicators in Dock"
+defaults write com.apple.dock show-process-indicators -bool true
+
+echo "  › Speed up Mission Control animations and group windows by application"
+defaults write com.apple.dock expose-animation-duration -float 0.1
+defaults write com.apple.dock expose-group-apps -bool true
+
 echo "  › Don't animate opening applications from the Dock"
 defaults write com.apple.dock launchanim -bool false
 
-# Wipe all (default) app icons from the Dock
-# This is only really useful when setting up a new Mac, or if you don’t use
-# the Dock to launch apps.
-# defaults write com.apple.dock persistent-apps -array
+echo "  › Set Dock mineffect to scale"
+defaults write com.apple.dock mineffect -string "scale"
 
-#############################
+echo "  › Don't automatically rearrange Spaces based on most recent use"
+defaults write com.apple.dock mru-spaces -bool false
 
-echo ""
-echo "› Transmission:"
-echo "  › Use ~/Downloads/Incomplete to store incomplete downloads"
-defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
-defaults write org.m0k.transmission IncompleteDownloadFolder -string "$HOME/Downloads/Incomplete"
+echo "  › Make Dock size immutable"
+defaults write com.apple.dock size-immutable -bool true
 
-echo "  › Don't prompt for confirmation before downloading"
-defaults write org.m0k.transmission DownloadAsk -bool false
+# The app list lives in macos/dock.<host>.txt because the personal and work
+# machines don't dock the same apps. Missing apps are skipped rather than
+# leaving a "?" tile behind.
+dock_list="$(dirname "$0")/dock.$host.txt"
+if [ -f "$dock_list" ]; then
+  echo "  › Set Dock apps from dock.$host.txt"
+  defaults delete com.apple.dock persistent-apps >/dev/null 2>&1
+  while IFS= read -r app; do
+    case "$app" in '' | '#'*) continue ;; esac
+    if [ ! -e "$app" ]; then
+      echo "    › Skipping $app, not installed"
+      continue
+    fi
+    defaults write com.apple.dock persistent-apps -array-add \
+      "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
+  done <"$dock_list"
 
-echo "  › Trash original torrent files"
-defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
-
-echo "  › Hide the donate message"
-defaults write org.m0k.transmission WarningDonate -bool false
-
-echo "  › Hide the legal disclaimer"
-defaults write org.m0k.transmission WarningLegal -bool false
-
-echo "  › Auto-add .torrent files in ~/Downloads"
-defaults write org.m0k.transmission AutoImportDirectory -string "$HOME/Downloads"
-
-echo "  › Auto-resize the window to fit transfers"
-defaults write org.m0k.transmission AutoSize -bool true
-
-echo "  › Auto update to betas"
-defaults write org.m0k.transmission AutoUpdateBeta -bool true
-
-echo "  › Set up the best block list"
-defaults write org.m0k.transmission EncryptionRequire -bool true
-defaults write org.m0k.transmission BlocklistAutoUpdate -bool true
-defaults write org.m0k.transmission BlocklistNew -bool true
-defaults write org.m0k.transmission BlocklistURL -string "http://john.bitsurge.net/public/biglist.p2p.gz"
-
-#############################
-
-echo ""
-echo "› Mail:"
-echo "  › Add the keyboard shortcut CMD + Enter to send an email"
-defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" "@\U21a9"
-echo "  › Add the keyboard shortcut CMD + Shift + E to archive an email"
-# shellcheck disable=SC2016
-defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Archive" '@$e'
-
-echo "  › Disable smart quotes as it's annoying for messages that contain code"
-defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false
-
-echo "  › Set email addresses to copy as 'foo@example.com' instead of 'Foo Bar <foo@example.com>'"
-defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
-
-echo "  › Display emails in threaded mode, sorted by date (oldest at the top)"
-defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreadedMode" -string "yes"
-defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortedDescending" -string "yes"
-defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortOrder" -string "received-date"
-
-echo "  › Disable inline attachments (just show the icons)"
-defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
-
-echo "  › Disable automatic spell checking"
-defaults write com.apple.mail SpellCheckingBehavior -string "NoSpellCheckingEnabled"
-
-echo "  ›  Disable send and reply animations in Mail.app"
-defaults write com.apple.mail DisableReplyAnimations -bool true
-defaults write com.apple.mail DisableSendAnimations -bool true
-
-#############################
-
-echo ""
-echo "› Time Machine:"
-echo "  › Prevent Time Machine from prompting to use new hard drives as backup volume"
-defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-
-###############################################################################
-# SSD-specific tweaks                                                         #
-###############################################################################
-echo ""
-echo "› SSD tweaks:"
-echo "  › Disable local backups"
-# https://classicyuppie.com/what-crap-is-this-os-xs-mobilebackups/
-sudo tmutil disablelocal
-
-echo "  › Disable hibernation (speeds up entering sleep mode)"
-sudo pmset -a hibernatemode 0
-
-echo "  › Remove the sleep image file to save disk space"
-sudo rm /private/var/vm/sleepimage
-echo "  › Create a zero-byte file instead..."
-sudo touch /private/var/vm/sleepimage
-echo "  › ...and make sure it can’t be rewritten"
-sudo chflags uchg /private/var/vm/sleepimage
-
-echo "  ›  Disable the sudden motion sensor as it’s not useful for SSDs"
-sudo pmset -a sms 0
+  echo "  › Keep only Downloads in the Dock's folder section"
+  defaults delete com.apple.dock persistent-others >/dev/null 2>&1
+  defaults write com.apple.dock persistent-others -array-add \
+    "<dict><key>tile-type</key><string>directory-tile</string><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$HOME/Downloads/</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
+else
+  echo "  › No dock.$host.txt, leaving Dock apps alone"
+fi
 
 #############################
 
 echo ""
 echo "› Restart related apps"
 for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-	"Dock" "Finder" "Mail" "Messages" "Safari" "SystemUIServer" \
-	"Terminal" "Transmission" "Photos"; do
-	killall "$app" >/dev/null 2>&1
+  "ControlCenter" "Dock" "Finder" "Ghostty" "Mail" "Messages" "Safari" \
+  "SystemUIServer" "Terminal" "Photos" "Image Capture"; do
+  killall "$app" >/dev/null 2>&1
 done
 set -e
+
+echo "Done. Some changes (keyboard shortcuts, input sources) need a log out to take effect."
