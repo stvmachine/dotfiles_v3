@@ -201,6 +201,23 @@ defaults write com.apple.dock mru-spaces -bool false
 echo "  › Make Dock size immutable"
 defaults write com.apple.dock size-immutable -bool true
 
+# Missing apps are skipped rather than leaving a "?" tile behind.
+echo "  › Set Dock apps"
+defaults delete com.apple.dock persistent-apps >/dev/null 2>&1
+for app in \
+  "/Applications/Zed.app" \
+  "/Applications/rio.app" \
+  "/Applications/Google Chrome.app" \
+  "/Applications/Microsoft Outlook.app" \
+  "/Applications/Microsoft Teams.app"; do
+  if [ ! -e "$app" ]; then
+    echo "    › Skipping $app, not installed"
+    continue
+  fi
+  defaults write com.apple.dock persistent-apps -array-add \
+    "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
+done
+
 #############################
 
 echo ""
