@@ -1,0 +1,62 @@
+# Rio, kept behavior-equivalent with Warp (warp/settings.toml); see AGENTS.md.
+# Each setting names the Warp setting it mirrors. Full reference:
+# https://rioterm.com/docs/config
+#
+# Top-level keys must come before the first [table], or Rio ignores them.
+
+# Warp appearance.text.line_height_ratio (default 1.2)
+line-height = 1.2
+
+# Warp terminal.copy_on_select (default true)
+copy-on-select = true
+
+# Warp terminal.maximum_grid_size (default 50000)
+scrollback-history-limit = 50000
+
+# Warp terminal.input.extra_meta_keys.left_alt. Left Option sends Alt so herdr's
+# Alt shortcuts reach it; right Option still composes characters.
+option-as-alt = "left"
+
+# Warp general.show_warning_before_quitting (default true)
+confirm-before-quit = true
+
+[fonts]
+# Warp uses its bundled Hack at 13pt. Rio bundles no font, and the Starship
+# prompt needs Nerd Font glyphs, so use the Nerd Font from macos/Brewfile.
+family = "DroidSansM Nerd Font Mono"
+size = 13
+
+[cursor]
+# Warp appearance.cursor: bar, blinking
+shape = "beam"
+blinking = true
+
+[navigation]
+# Warp uses vertical tabs. Rio 0.5 has no vertical or sidebar mode, so use its
+# regular tab bar; herdr's sidebar covers the workspace list.
+mode = "Tab"
+# Warp session.working_directory_config: new tabs open in the previous directory
+current-working-directory = true
+
+# Warp's built-in "Dark" theme (warpdotdev/Warp, app/src/themes/default_themes.rs).
+[colors]
+background = "#050505"
+foreground = "#FFFFFF"
+cursor = "#19AAD8"
+tabs-active = "#19AAD8"
+black = "#616161"
+red = "#FF8272"
+green = "#B4FA72"
+yellow = "#FEFDC2"
+blue = "#A5D5FE"
+magenta = "#FF8FFD"
+cyan = "#D0D1FE"
+white = "#F1F1F1"
+light-black = "#8E8E8E"
+light-red = "#FFC4BD"
+light-green = "#D6FCB9"
+light-yellow = "#FEFDD5"
+light-blue = "#C1E3FE"
+light-magenta = "#FFB1FE"
+light-cyan = "#E5E6FE"
+light-white = "#FEFFFF"

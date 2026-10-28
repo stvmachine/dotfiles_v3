@@ -135,6 +135,13 @@ All tools below are compatible with Fish shell and Starship prompt:
 - [`grc`](https://github.com/garabik/grc) to colorize command's outputs;
 - [`starship.rs`](https://starship.rs) the prompt we are using (Fish is the shell);
 
+## Terminals
+
+Warp and Rio are configured to behave the same: `warp/settings.toml` and
+`rio/config.toml` are symlinked into place by bootstrap. Both show the same
+Starship prompt (from `starship/config.toml`), and both send Alt from left
+Option so herdr's shortcuts work. See `AGENTS.md` for how they're kept in sync.
+
 ## OpenCode
 
 OpenCode configuration lives in a **separate repo** —
