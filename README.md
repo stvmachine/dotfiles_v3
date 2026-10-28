@@ -128,38 +128,26 @@ All tools below are compatible with Fish shell and Starship prompt:
 
 ## OpenCode
 
-This dotfiles repo manages the OpenCode configuration under `.config/opencode/`.
-It includes profiles, the `rtk.ts` plugin, `oh-my-opencode-slim` presets,
-and non-GSD skills. GSD-related generated files are ignored.
+OpenCode configuration lives in a **separate repo** —
+[`stvmachine/opencode-config`](https://github.com/stvmachine/opencode-config) —
+because it changes far more often than the rest of these dotfiles. `opencode/install.fish`
+clones (or pulls) that repo directly into `~/.config/opencode` during bootstrap, then
+rebuilds the generated preset config.
+
+That repo holds `opencode.jsonc`, OCX profiles + wrapper scripts,
+`oh-my-opencode-slim` presets, the `rtk.ts` plugin, and vendored skills. See its
+README and `docs/PROFILES.md` for the profile → preset mapping and setup details.
 
 ### Install
 
-After running the bootstrap script and `brew bundle`, set up OpenCode:
-
 ```console
 cd ~/.dotfiles
-./script/bootstrap.fish
-
-cd ~/.config/opencode
-npm install
-
-opencode plugin install -g oh-my-opencode-slim
-opencode plugin install -g @warp-dot-dev/opencode-warp
-opencode plugin install -g opencode-openai-codex-auth
+./script/bootstrap.fish   # clones/updates ~/.config/opencode from opencode-config
 ```
 
-### Profiles
-
-OCX profiles launch different `oh-my-opencode-slim` presets:
-
-```console
-ocx opencode -p free
-ocx opencode -p kimi
-ocx opencode -p kimi-superpowers
-ocx opencode -p sol-kimi
-```
-
-See `.config/opencode/PROFILES.md` for how the profile → preset mapping works.
+> First-time setup needs the `github-personal` SSH key, since the clone is over
+> SSH: run `add-github-profile personal "<name>" "<email>"` (see
+> [SSH keys / GitHub](#ssh-keys--github)), then re-run bootstrap.
 
 ### GSD-core
 
@@ -169,8 +157,8 @@ To install GSD workflows and agents on top of this OpenCode setup:
 npx -y @opengsd/gsd-core@latest --opencode --global
 ```
 
-GSD writes ignored files into `~/.config/opencode/` (agents, command, gsd-core,
-hooks, etc.), so they are not tracked in this repo.
+GSD writes files into `~/.config/opencode/` (agents, command, gsd-core, hooks,
+etc.) that the opencode-config repo's `.gitignore` already excludes.
 
 ## Mac Setup
 
