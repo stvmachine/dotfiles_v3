@@ -2,44 +2,50 @@ Forked from [Caarlos0 dotfiles](https://github.com/caarlos0/dotfiles.fish)
 
 ## Installation
 
-### Dependencies
-
-First, make sure you have all those things installed:
-
-- `git`: to clone the repo
-- `curl`: to download some stuff
-- `tar`: to extract downloaded stuff
-- `fish`: the shell
-- `sudo`: some configs may need that
-
 ### Install
 
-Then, run these steps:
+On a fresh Mac, run these in order. `bootstrap.fish` needs `fish`, and the
+OpenCode step needs `bun`; both come from the Brewfile, so it has to be
+installed first.
 
-```console
-git clone https://github.com/stvmachine/dotfiles_v3 ~/.dotfiles
-cd ~/.dotfiles
-./script/bootstrap.fish
-```
+1. Install Homebrew (it also installs the Xcode Command Line Tools, which
+   provide `git`; if that fails, run `xcode-select --install`):
 
-### Mac brew install
+   ```console
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
 
-Run brew bundle from macos folder
+2. Clone the repo and install the Brewfile (`fish`, `starship`, `bun`, `nvm`,
+   apps):
 
-```console
-cd macos
-brew bundle
-```
+   ```console
+   git clone https://github.com/stvmachine/dotfiles_v3 ~/.dotfiles
+   brew bundle --file ~/.dotfiles/macos/Brewfile
+   ```
 
-> All changed files will be backed up with a `.backup` suffix.
+3. Run the bootstrap:
+
+   ```console
+   cd ~/.dotfiles
+   ./script/bootstrap.fish
+   ```
+
+What bootstrap does with existing files:
+
+- Files it replaces with symlinks (`*.symlink` → `~/.<name>`, fish plugins,
+  ssh config) and an existing `~/.gitconfig` are moved to `<name>.backup`.
+- Files in `~/.config/fish/conf.d/` with the same name as one of the repo's
+  `*/conf.d/*.fish` are **overwritten without a backup**.
+- An existing `~/.config/opencode` that isn't the opencode-config clone is
+  moved to `~/.config/opencode.backup-<timestamp>`.
 
 #### Update
 
-To update, you just need to `git pull` and run the bootstrap script again:
+To update, pull and run the bootstrap script again:
 
 ```console
 cd ~/.dotfiles
-git pull origin master
+git pull origin main
 ./script/bootstrap.fish
 ```
 
@@ -50,11 +56,14 @@ the fish config and dotfiles folder, as well as moving back some config files.
 
 ```console
 rm -rf ~/.dotfiles $__fish_config_dir
+rm -rf ~/.config/opencode ~/.config/ocx
+bun remove --global ocx
 ```
 
 The bootstrap script would have created a bunch of symlinks that will now be broken.
 You will have to investigate those manually.
-In cases a file already existed, the boostrap script should have created a `.backup` file with the same name.
+Where a file already existed, bootstrap moved it to `<name>.backup` (see the
+list above); move those back. Overwritten `conf.d` files can't be restored.
 
 ## SSH keys / GitHub
 
@@ -134,9 +143,13 @@ because it changes far more often than the rest of these dotfiles. `opencode/ins
 clones (or pulls) that repo directly into `~/.config/opencode` during bootstrap, then
 rebuilds the generated preset config.
 
-That repo holds `opencode.jsonc`, OCX profiles + wrapper scripts,
+That repo holds `opencode.jsonc`, the OCX 3 profiles (`ocx/`),
 `oh-my-opencode-slim` presets, and vendored skills. See its
 README and `docs/PROFILES.md` for the profile → preset mapping and setup details.
+
+Besides cloning, `opencode/install.fish` sets up `~/.config/ocx` from the
+repo's `ocx/`, rebuilds the presets, and installs `ocx@next` with bun.
+`opencode/conf.d/ocx.fish` puts `~/.bun/bin` on PATH so `ocx` resolves.
 
 ### Install
 
@@ -151,33 +164,11 @@ cd ~/.dotfiles
 
 ### GSD-core
 
-To install GSD workflows and agents on top of this OpenCode setup:
-
-```console
-npx -y @opengsd/gsd-core@latest --opencode --global
-```
-
-GSD writes files into `~/.config/opencode/` (agents, command, gsd-core, hooks,
-etc.) that the opencode-config repo's `.gitignore` already excludes.
+GSD workflows and agents install on top of this OpenCode setup. The install
+command, its Node requirement, and the cleanup it needs afterwards are in the
+opencode-config README's "GSD Core" section.
 
 ## Mac Setup
-
-Facing the setup of a new machine (or the need to reinstall after a fresh OS install or the like), here's a very brief and basic list of the usual suspects, related to the setup of a mac computer to work with (mostly related to a scripting languages context).
-
-The package manager is the default first thing I always install. Simply following the default steps. Homebrew should download and install the Command Line Tools for Xcode automatically, but if it doesn't work, you can install them manually:
-
-```bash
-xcode-select --install
-```
-
-Install brew and install apps
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-brew bundle --file ~/.dotfiles/macos/Brewfile 
-```
-
 
 ### macOS defaults
 
