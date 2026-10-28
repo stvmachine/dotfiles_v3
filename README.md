@@ -135,7 +135,7 @@ clones (or pulls) that repo directly into `~/.config/opencode` during bootstrap,
 rebuilds the generated preset config.
 
 That repo holds `opencode.jsonc`, OCX profiles + wrapper scripts,
-`oh-my-opencode-slim` presets, the `rtk.ts` plugin, and vendored skills. See its
+`oh-my-opencode-slim` presets, and vendored skills. See its
 README and `docs/PROFILES.md` for the profile → preset mapping and setup details.
 
 ### Install
