@@ -63,6 +63,11 @@ GitHub access uses one SSH key per identity, selected via SSH host aliases
 keys live in `~/.ssh/` and are **never committed** — only the host config is
 version-controlled here.
 
+`ssh/install.fish` (run by `bootstrap.fish`) makes `~/.ssh` private, pins
+`config.dotfiles` to `0600` (ssh rejects group/world-writable configs), and
+pre-seeds github.com host keys so the first `ssh -T git@github-*` doesn't stall
+on host verification.
+
 ### Add a key (first time, or on a new machine)
 
 ```console
