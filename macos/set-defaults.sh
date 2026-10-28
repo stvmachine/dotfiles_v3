@@ -6,15 +6,8 @@
 #
 # Run ./macos/set-defaults.sh and you'll be good to go.
 
-if [ "$(uname -s)" != "Darwin" ]; then
-  exit 0
-fi
-
 set +e
-
 sudo -v
-
-host="$(hostname -s)"
 
 echo ""
 echo "› System:"
@@ -213,7 +206,7 @@ defaults write com.apple.dock size-immutable -bool true
 echo ""
 echo "› Restart related apps"
 for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-  "ControlCenter" "Dock" "Finder" "Mail" "Messages" "Safari" \
+  "ControlCenter" "Dock" "Finder" 	"Mail" "Messages" "Safari" \
   "SystemUIServer" "Terminal" "Photos" "Image Capture"; do
   killall "$app" >/dev/null 2>&1
 done
