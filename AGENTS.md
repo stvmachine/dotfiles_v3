@@ -26,8 +26,7 @@ bootstrap picks these up by convention, so a new topic needs no registration:
 Notable topics:
 
 - `macos/`: `Brewfile` (all apps and CLIs) and `set-defaults.sh` (macOS
-  defaults; Dock apps come from `macos/dock.<hostname>.txt` when that file
-  exists).
+  defaults; clear the dock apps)
 - `opencode/`: only clones the separate `stvmachine/opencode-config` repo into
   `~/.config/opencode`. Change OpenCode config in that repo, not here.
 - `git/`, `ssh/`, `bin/git-profile-*`: per-repo work/personal identities.
