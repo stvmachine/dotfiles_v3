@@ -16,6 +16,24 @@
     },
   },
   {
+    "label": "start yazi",
+    "command": "yazi",
+    // yazi opens text files with $EDITOR, so picks land back in this Zed window.
+    "env": { "EDITOR": "zed" },
+    "hide": "on_success",
+    "reveal_target": "center",
+    "show_summary": false,
+    "show_command": false,
+    "allow_concurrent_runs": true,
+    "use_new_terminal": true,
+    "shell": {
+      "with_arguments": {
+        "program": "/bin/bash",
+        "args": ["--noprofile", "--norc", "-c"],
+      },
+    },
+  },
+  {
     "label": "Open PR in browser",
     "command": "gh pr view --web",
     "hide": "on_success",

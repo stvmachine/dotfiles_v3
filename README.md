@@ -136,11 +136,12 @@ Option so herdr's shortcuts work. See `AGENTS.md` for how they're kept in sync.
 
 `zed/settings.json`, `zed/keymap.json` and `zed/tasks.json` are symlinked into
 `~/.config/zed/` by bootstrap. The keymap swaps a few built-ins for terminal
-tools (both installed from the Brewfile):
+tools (all installed from the Brewfile):
 
 | Key         | Opens                                         |
 | ----------- | --------------------------------------------- |
 | `cmd-g`     | [`lazygit`](https://github.com/jesseduffield/lazygit) |
+| `cmd-alt-y` | [`yazi`](https://github.com/sxyazi/yazi) file manager; opening a file sends it to Zed |
 | `cmd-alt-g` | the current branch's PR on GitHub (`gh pr view --web`) |
 | `cmd-p`     | `tv files` ([television](https://github.com/alexpasmantier/television)), opens the pick in Zed |
 | `cmd-f`     | `tv text`, opens the matching file and line in Zed |

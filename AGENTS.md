@@ -33,8 +33,8 @@ Notable topics:
 - `zed/`: `settings.json`, `keymap.json` and `tasks.json`, each linked into
   `~/.config/zed/`. Zed writes UI setting changes through the links, so check
   `git diff zed/` after using its settings UI. The keymap spawns tasks that
-  need `lazygit` (cmd-g) and `television`/`tv` (cmd-p, cmd-f) from the
-  Brewfile, plus the `zed` CLI, which `install.fish` links into `~/.local/bin`
+  need `lazygit` (cmd-g), `yazi` (cmd-alt-y) and `television`/`tv` (cmd-p,
+  cmd-f) from the Brewfile, plus the `zed` CLI, which `install.fish` links into `~/.local/bin`
   when Zed wasn't installed by Homebrew.
 
 ## Conventions
