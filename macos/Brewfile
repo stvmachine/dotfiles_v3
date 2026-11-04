@@ -38,6 +38,8 @@ brew "opencode"
 brew "ollama"
 brew "herdr"
 brew "rtk"
+brew "supabase"
+brew "awscli"
 
 ## Devops & infra
 cask "docker-desktop"
@@ -47,7 +49,7 @@ brew "commitizen"
 brew "entr"
 
 ## Productivity
-cask "rectangle"
+# Window managment and finder
 cask "supercmdlabs/supercmd/supercmd"
 cask "fork"
 cask "processspy"
