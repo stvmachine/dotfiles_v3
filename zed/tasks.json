@@ -16,6 +16,20 @@
     },
   },
   {
+    "label": "Open PR in browser",
+    "command": "gh pr view --web",
+    "hide": "on_success",
+    "reveal": "no_focus",
+    "allow_concurrent_runs": true,
+    "use_new_terminal": true,
+    "shell": {
+      "with_arguments": {
+        "program": "/bin/bash",
+        "args": ["--noprofile", "--norc", "-c"],
+      },
+    },
+  },
+  {
     "label": "File Finder",
     "command": "zed \"$(tv files)\"",
     "hide": "always",

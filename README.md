@@ -141,6 +141,7 @@ tools (both installed from the Brewfile):
 | Key         | Opens                                         |
 | ----------- | --------------------------------------------- |
 | `cmd-g`     | [`lazygit`](https://github.com/jesseduffield/lazygit) |
+| `cmd-alt-g` | the current branch's PR on GitHub (`gh pr view --web`) |
 | `cmd-p`     | `tv files` ([television](https://github.com/alexpasmantier/television)), opens the pick in Zed |
 | `cmd-f`     | `tv text`, opens the matching file and line in Zed |
 | `cmd-alt-c` | a new Claude Code agent thread                |
