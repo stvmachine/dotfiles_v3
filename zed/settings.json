@@ -44,6 +44,12 @@
   }
 	},
 	"proxy": "",
+	// Installed on startup: oxc provides the oxlint/oxfmt language servers
+	// below, blackfox the dark theme.
+	"auto_install_extensions": {
+		"oxc": true,
+		"blackfox": true
+	},
 	"icon_theme": "Zed (Default)",
 	"telemetry": {
 		"diagnostics": false,

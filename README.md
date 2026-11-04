@@ -145,6 +145,12 @@ tools (both installed from the Brewfile):
 | `cmd-f`     | `tv text`, opens the matching file and line in Zed |
 | `cmd-alt-c` | a new Claude Code agent thread                |
 
+Zed installs the extensions listed under `auto_install_extensions` in
+`settings.json` on its next start: Oxc (the oxlint/oxfmt language servers) and
+the BlackFox theme. The Oxc extension downloads `oxlint` and `oxfmt` from npm
+unless the project already has them in `package.json`, so they aren't in the
+Brewfile.
+
 ## OpenCode
 
 OpenCode configuration lives in a **separate repo** —
