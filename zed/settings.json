@@ -63,6 +63,14 @@
 		"light": "Ayu Light",
 		"dark": "BlackFox"
 	},
+	"disable_ai": true,
+	"which_key": {
+		"enabled": true
+	},
+	"colorize_brackets": true,
+	"minimap": {
+		"show": "never"
+	},
 	"format_on_save": "off",
 	"autosave": "off",
 	"lsp": {
