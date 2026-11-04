@@ -125,16 +125,6 @@ git remote -v
 Fresh clones need the profile applied once after cloning, since remotes default to `github.com`/HTTPS.
 `git-profile-work` also converts `github-personal` remotes to work; `git-profile-personal` does not convert `github-work` remotes back.
 
-## Recommended Software
-
-All tools below are compatible with Fish shell and Starship prompt:
-
-- [`bat`](https://github.com/sharkdp/bat) a cat(1) clone with wings;
-- [`fzf`](https://github.com/junegunn/fzf) for a fuzzy-finder (with Fish integration);
-- [`gh`](https://github.com/cli/cli) for more GitHub integration with the terminal;
-- [`grc`](https://github.com/garabik/grc) to colorize command's outputs;
-- [`starship.rs`](https://starship.rs) the prompt we are using (Fish is the shell);
-
 ## Terminals
 
 Warp and Rio are configured to behave the same: `warp/settings.toml` and
@@ -142,7 +132,7 @@ Warp and Rio are configured to behave the same: `warp/settings.toml` and
 Starship prompt (from `starship/config.toml`), and both send Alt from left
 Option so herdr's shortcuts work. See `AGENTS.md` for how they're kept in sync.
 
-## Zed
+### Zed
 
 `zed/settings.json`, `zed/keymap.json` and `zed/tasks.json` are symlinked into
 `~/.config/zed/` by bootstrap. The keymap swaps a few built-ins for terminal
@@ -182,11 +172,6 @@ cd ~/.dotfiles
 > SSH: run `add-github-profile personal "<name>" "<email>"` (see
 > [SSH keys / GitHub](#ssh-keys--github)), then re-run bootstrap.
 
-### GSD-core
-
-GSD workflows and agents install on top of this OpenCode setup. The install
-command, its Node requirement, and the cleanup it needs afterwards are in the
-opencode-config README's "GSD Core" section.
 
 ## Mac Setup
 
@@ -197,10 +182,3 @@ You use it by running:
 ```console
 ~/.dotfiles/macos/set-defaults.sh
 ```
-
-And logging out and in again or restart.
-
-
-## Acknowledge
-
-Thanks to alexramirez: <https://github.com/alexramirez/mac-setup>
