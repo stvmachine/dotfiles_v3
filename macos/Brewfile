@@ -31,15 +31,12 @@ brew "pnpm"
 # Incredibly fast JavaScript runtime, bundler, test runner, and package manager
 brew "bun"
 
-
 ## AI & ML Tools
 cask "claude-code"
 brew "opencode"
 brew "ollama"
 brew "herdr"
 brew "rtk"
-brew "supabase"
-brew "awscli"
 
 ## Devops & infra
 cask "docker-desktop"
@@ -47,6 +44,8 @@ brew "direnv"
 brew "commitizen"
 # Run arbitrary commands when files change
 brew "entr"
+brew "supabase"
+brew "awscli"
 
 ## Productivity
 # Window managment and finder
