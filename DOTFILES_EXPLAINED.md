@@ -290,7 +290,7 @@ Keep it in an existing component when:
 ### Component Naming Conventions
 
 - Use **lowercase** with hyphens: `react-native/`, `aws/`, `node/`
-- Name after the **primary tool or concern**: `python/`, `ruby/`, `scripts/docker/`
+- Name after the **primary tool or concern**: `python/`, `ruby/`
 - Keep names **descriptive and clear**: `react-native/` not `rn/`
 
 ---
@@ -448,4 +448,3 @@ Your dotfiles system is a **modular, component-based configuration manager** whe
 - **Modular organization** makes it easier to find, maintain, and share configurations
 
 The `@install.fish (1)` notation is just Fish shell showing you that scripts are running - completely normal!
-
