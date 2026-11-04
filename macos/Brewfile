@@ -18,6 +18,10 @@ cask "rio"
 brew "lazygit"
 # Fuzzy finder TUI, `tv` (Zed cmd-p / cmd-f)
 brew "television"
+# tv's files channel lists with fd, text searches with rg, both preview with bat
+brew "fd"
+brew "ripgrep"
+brew "bat"
 
 ## Dev tools
 brew "rbenv"
