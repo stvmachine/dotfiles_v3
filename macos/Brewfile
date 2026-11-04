@@ -26,6 +26,10 @@ brew "nvm"
 brew "pnpm"
 # Incredibly fast JavaScript runtime, bundler, test runner, and package manager
 brew "bun"
+# Terminal UI for git (Zed cmd-g)
+brew "lazygit"
+# Fuzzy finder TUI, `tv` (Zed cmd-p / cmd-f)
+brew "television"
 
 ## AI & ML Tools
 cask "claude-code"

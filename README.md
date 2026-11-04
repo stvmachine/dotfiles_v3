@@ -142,6 +142,19 @@ Warp and Rio are configured to behave the same: `warp/settings.toml` and
 Starship prompt (from `starship/config.toml`), and both send Alt from left
 Option so herdr's shortcuts work. See `AGENTS.md` for how they're kept in sync.
 
+## Zed
+
+`zed/settings.json`, `zed/keymap.json` and `zed/tasks.json` are symlinked into
+`~/.config/zed/` by bootstrap. The keymap swaps a few built-ins for terminal
+tools (both installed from the Brewfile):
+
+| Key         | Opens                                         |
+| ----------- | --------------------------------------------- |
+| `cmd-g`     | [`lazygit`](https://github.com/jesseduffield/lazygit) |
+| `cmd-p`     | `tv files` ([television](https://github.com/alexpasmantier/television)), opens the pick in Zed |
+| `cmd-f`     | `tv text`, opens the matching file and line in Zed |
+| `cmd-alt-c` | a new Claude Code agent thread                |
+
 ## OpenCode
 
 OpenCode configuration lives in a **separate repo** —

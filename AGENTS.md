@@ -30,6 +30,12 @@ Notable topics:
 - `opencode/`: only clones the separate `stvmachine/opencode-config` repo into
   `~/.config/opencode`. Change OpenCode config in that repo, not here.
 - `git/`, `ssh/`, `bin/git-profile-*`: per-repo work/personal identities.
+- `zed/`: `settings.json`, `keymap.json` and `tasks.json`, each linked into
+  `~/.config/zed/`. Zed writes UI setting changes through the links, so check
+  `git diff zed/` after using its settings UI. The keymap spawns tasks that
+  need `lazygit` (cmd-g) and `television`/`tv` (cmd-p, cmd-f) from the
+  Brewfile, plus the `zed` CLI, which `install.fish` links into `~/.local/bin`
+  when Zed wasn't installed by Homebrew.
 
 ## Conventions
 
