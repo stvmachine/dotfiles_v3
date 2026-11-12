@@ -1,0 +1,49 @@
+#!/usr/bin/env -S fish --no-config
+#
+# Renders a markdown file with glow, first drawing its ```mermaid blocks as
+# text diagrams with mermaid-ascii. Blocks mermaid-ascii can't draw stay as
+# source. Skips the user config so it starts fast enough for previews.
+#
+# Usage: glow-mermaid FILE [GLOW_FLAGS...]
+# The flags go to glow; a -w=N or --width=N also caps how wide diagrams get.
+
+set file $argv[1]
+set glow_flags $argv[2..]
+
+set mermaid_flags
+for flag in $glow_flags
+	if string match -qr -- '^(-w|--width)=(?<width>\d+)$' $flag
+		# glow wraps code lines longer than its width minus 6 (margins and
+		# padding), which would break a diagram apart.
+		set mermaid_flags --max-width (math $width - 6)
+	end
+end
+
+begin
+	set in_block false
+	set block
+	for line in (cat $file)
+		if not $in_block
+			if string match -qr -- '^ {0,3}```\s*mermaid\s*$' $line
+				set in_block true
+				set block
+			else
+				printf '%s\n' $line
+			end
+		else if string match -qr -- '^ {0,3}```\s*$' $line
+			set in_block false
+			set diagram (printf '%s\n' $block | mermaid-ascii $mermaid_flags 2>/dev/null)
+			if test $status -eq 0
+				printf '%s\n' '```' $diagram '```'
+			else
+				printf '%s\n' '```mermaid' $block '```'
+			end
+		else
+			set -a block $line
+		end
+	end
+	# An unclosed block runs to the end of the file, as in markdown.
+	if $in_block
+		printf '%s\n' '```mermaid' $block
+	end
+end | glow $glow_flags -

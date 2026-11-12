@@ -153,6 +153,21 @@ the BlackFox theme. The Oxc extension downloads `oxlint` and `oxfmt` from npm
 unless the project already has them in `package.json`, so they aren't in the
 Brewfile.
 
+### Yazi
+
+`yazi/yazi.toml`, `yazi/keymap.toml` and `yazi/package.toml` are symlinked into
+`~/.config/yazi/` by bootstrap, which then runs `ya pkg install` to fetch the
+plugins pinned in `package.toml` (`toggle-pane`, `zoom`, `piper`,
+`faster-piper`). The plugins themselves aren't committed. Image zoom uses
+ImageMagick from the Brewfile.
+
+Markdown previews run `bin/glow-mermaid`, which draws ```` ```mermaid ```` blocks
+as text diagrams with
+[mermaid-ascii](https://github.com/AlexanderGrooff/mermaid-ascii), then renders
+the file with `glow`. Diagrams mermaid-ascii can't draw (pie charts, class
+diagrams, ...) show as source. mermaid-ascii isn't in Homebrew, so
+`yazi/install.fish` builds it with `go install` into `~/.local/bin`.
+
 ## OpenCode
 
 OpenCode configuration lives in a **separate repo** —

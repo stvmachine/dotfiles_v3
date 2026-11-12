@@ -36,6 +36,13 @@ Notable topics:
   need `lazygit` (cmd-g), `yazi` (cmd-alt-y) and `television`/`tv` (cmd-p,
   cmd-f) from the Brewfile, plus the `zed` CLI, which `install.fish` links into `~/.local/bin`
   when Zed wasn't installed by Homebrew.
+- `yazi/`: `yazi.toml`, `keymap.toml` and `package.toml`, each linked into
+  `~/.config/yazi/`. Plugins are not committed; `install.fish` fetches them
+  with `ya pkg install`. Add plugins with `ya pkg add`, which writes
+  `package.toml` through the link. The markdown previewer is
+  `bin/glow-mermaid` (mermaid-ascii, then glow); it runs on every hover, so
+  its shebang skips the fish config to start fast. `install.fish` builds
+  mermaid-ascii with `go install` into `~/.local/bin`.
 
 ## Conventions
 

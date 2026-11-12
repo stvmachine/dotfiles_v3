@@ -1,0 +1,10 @@
+[mgr]
+ratio = [1, 2, 5]
+
+[preview]
+max_width = 3600
+max_height = 3600
+
+[[plugin.prepend_previewers]]
+url = "*.md"
+run = 'faster-piper -- CLICOLOR_FORCE=1 glow-mermaid "$1" -w=$w -s=dracula'

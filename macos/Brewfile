@@ -18,12 +18,15 @@ cask "rio"
 brew "lazygit"
 # Fuzzy finder TUI, `tv` (Zed cmd-p / cmd-f)
 brew "television"
-# Terminal file manager (Zed cmd-alt-y)
-brew "yazi"
 # tv's files channel lists with fd, text searches with rg, both preview with bat
 brew "fd"
 brew "ripgrep"
 brew "bat"
+# Terminal file manager (Zed cmd-alt-y)
+brew "yazi"
+brew "imagemagick" # better visualisation of images with yazi
+brew "glow" # better markdown preview with yazi
+
 
 ## Dev tools
 brew "rbenv"
