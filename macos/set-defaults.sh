@@ -40,6 +40,11 @@ defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
+echo "  › Disable emoji suggestions when typing ':' and when opening the emoji picker (needs a restart)"
+sudo mkdir -p /Library/Preferences/FeatureFlags/Domain
+sudo defaults write /Library/Preferences/FeatureFlags/Domain/Stickers InlineEmojiSearch -dict Enabled -bool false
+sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit emoji_enhancements -dict Enabled -bool false
+
 echo "  › Disable web automatic spelling correction"
 defaults write -g WebAutomaticSpellingCorrectionEnabled -bool false
 
