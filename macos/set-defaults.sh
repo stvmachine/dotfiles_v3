@@ -45,6 +45,26 @@ sudo mkdir -p /Library/Preferences/FeatureFlags/Domain
 sudo defaults write /Library/Preferences/FeatureFlags/Domain/Stickers InlineEmojiSearch -dict Enabled -bool false
 sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit emoji_enhancements -dict Enabled -bool false
 
+echo "  › Disable the ctrl-cmd-space shortcut for the emoji picker (apps need a relaunch)"
+defaults write -g NSUserKeyEquivalents -dict-add "Emoji & Symbols" '\0'
+
+echo "  › Disable SuperCmd's inline emoji picker (restart SuperCmd if running)"
+supercmd_settings="$HOME/Library/Application Support/SuperCmd/settings.json"
+if [ -f "$supercmd_settings" ]; then
+	/usr/bin/python3 - "$supercmd_settings" <<'PY'
+import json, os, sys, tempfile
+path = sys.argv[1]
+with open(path) as f:
+    settings = json.load(f)
+if settings.get("emojiPickerEnabled") is not False:
+    settings["emojiPickerEnabled"] = False
+    fd, tmp = tempfile.mkstemp(dir=os.path.dirname(path), prefix=".settings.", suffix=".tmp")
+    with os.fdopen(fd, "w") as f:
+        json.dump(settings, f, indent=2, ensure_ascii=False)
+    os.replace(tmp, path)
+PY
+fi
+
 echo "  › Disable web automatic spelling correction"
 defaults write -g WebAutomaticSpellingCorrectionEnabled -bool false
 
