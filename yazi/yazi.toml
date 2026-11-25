@@ -5,6 +5,11 @@ ratio = [1, 2, 5]
 max_width = 3600
 max_height = 3600
 
+[opener]
+edit = [
+  { run = 'hx %s', block = true, desc = "Helix", for = "unix" },
+]
+
 [[plugin.prepend_previewers]]
 url = "*.md"
 run = 'faster-piper -- CLICOLOR_FORCE=1 glow-mermaid "$1" -w=$w -s=dracula'
