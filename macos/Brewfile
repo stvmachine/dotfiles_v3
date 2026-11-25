@@ -65,6 +65,8 @@ cask "processspy"
 brew "asciinema"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
+# Offline API docs browser (dash/ builds the docsets it doesn't offer)
+cask "dash"
 
 ## Browsers
 cask "brave-browser"

@@ -43,6 +43,13 @@ Notable topics:
   `bin/glow-mermaid` (mermaid-ascii, then glow); it runs on every hover, so
   its shebang skips the fish config to start fast. `install.fish` builds
   mermaid-ascii with `go install` into `~/.local/bin`.
+- `dash/`: `install.fish` lists the docsets to install (main docsets, cheat
+  sheets, user contributed) and sends Dash `dash-feed://`/`dash-install://`
+  URLs for the missing ones; Dash downloads them. When a docset is added or
+  removed in Dash, update those lists. It also builds docsets Dash doesn't
+  offer (`dash/yazi-docset` mirrors the Yazi docs into
+  `~/.local/share/dash/Yazi.docset`) when missing; run a builder directly to
+  refresh. Dash itself is in the Brewfile.
 
 ## Conventions
 

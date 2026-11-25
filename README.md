@@ -168,6 +168,24 @@ the file with `glow`. Diagrams mermaid-ascii can't draw (pie charts, class
 diagrams, ...) show as source. mermaid-ascii isn't in Homebrew, so
 `yazi/install.fish` builds it with `go install` into `~/.local/bin`.
 
+### Dash
+
+Bootstrap installs the docsets listed at the top of `dash/install.fish` (main
+docsets, cheat sheets and user-contributed ones) by sending
+[Dash](https://kapeli.com/dash) its install URLs, skipping the ones already
+installed. Dash shows the downloads in Settings > Downloads. Add a docset by
+adding it to those lists and running `$DOTFILES/dash/install.fish`.
+
+Dash has no Yazi docset, so `dash/yazi-docset` builds one from
+<https://yazi-rs.github.io/docs> into `~/.local/share/dash/Yazi.docset` and
+adds it to Dash. Search it with
+`yazi:` (e.g. `yazi:mgr.quit`, `yazi:ya.notify`). Bootstrap builds it when
+it's missing; refresh it after a Yazi release with:
+
+```fish
+$DOTFILES/dash/yazi-docset
+```
+
 ## OpenCode
 
 OpenCode configuration lives in a **separate repo** —

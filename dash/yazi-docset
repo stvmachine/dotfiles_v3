@@ -1,0 +1,257 @@
+#!/usr/bin/env python3
+"""Build a Dash docset from the Yazi docs (https://yazi-rs.github.io/docs).
+
+Mirrors the stable /docs pages listed in the site's sitemap, strips the
+Docusaurus chrome and scripts, indexes headings for Dash search, then adds the
+docset to Dash. Re-run it to refresh after a Yazi release.
+
+Usage: yazi-docset [output-dir]   (default: ~/.local/share/dash)
+"""
+
+import html
+import os
+import re
+import shutil
+import sqlite3
+import subprocess
+import sys
+import urllib.parse
+import urllib.request
+
+SITE = "https://yazi-rs.github.io"
+NAME = "Yazi"
+
+# Dash entry type for `###` headings, by page. Pages not listed only get their
+# title and `##` sections indexed.
+H3_TYPES = {
+    "configuration/keymap": "Command",
+    "configuration/keymap-arrow": "Command",
+    "configuration/keymap-gait": "Command",
+    "configuration/yazi": "Setting",
+    "configuration/vfs": "Setting",
+    "configuration/theme": "Style",
+}
+
+HIDE_CHROME = """<style>
+.navbar, .theme-doc-sidebar-container, .theme-doc-toc-desktop,
+.theme-doc-toc-mobile, .theme-doc-breadcrumbs, .theme-doc-footer,
+.pagination-nav, .footer, .theme-announcement-bar, .skipToContent_fXgn,
+.hash-link { display: none !important; }
+.main-wrapper .container { max-width: 100% !important; }
+.main-wrapper .row > .col { max-width: 100% !important; flex: 1 0 100% !important; }
+[role=tabpanel][hidden] { display: block !important; }
+</style>
+<script>
+document.documentElement.dataset.theme =
+  matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+</script>
+"""
+
+
+def fetch(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "yazi-docset"})
+    with urllib.request.urlopen(req, timeout=30) as res:
+        return res.read()
+
+
+def doc_pages():
+    sitemap = fetch(f"{SITE}/sitemap.xml").decode()
+    pages = []
+    for loc in re.findall(r"<loc>([^<]+)</loc>", sitemap):
+        path = urllib.parse.urlparse(loc).path
+        if path.startswith("/docs/") and not path.startswith("/docs/next/"):
+            pages.append(path.removeprefix("/docs/").strip("/"))
+    return sorted(set(pages))
+
+
+def relative(from_file, to_file):
+    return os.path.relpath(to_file, os.path.dirname(from_file) or ".")
+
+
+class Builder:
+    def __init__(self, out):
+        self.docset = os.path.join(out, f"{NAME}.docset")
+        self.contents = os.path.join(self.docset, "Contents")
+        self.documents = os.path.join(self.contents, "Resources", "Documents")
+        self.assets = set()
+        self.entries = []
+
+    def save(self, rel, data):
+        path = os.path.join(self.documents, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "wb") as f:
+            f.write(data)
+
+    def asset(self, path):
+        """Download a site asset once and return its docset-relative path."""
+        rel = path.lstrip("/")
+        if rel in self.assets:
+            return rel
+        self.assets.add(rel)
+        try:
+            data = fetch(SITE + path)
+        except Exception as e:
+            print(f"  skip {path}: {e}", file=sys.stderr)
+            return rel
+        if rel.endswith(".css"):
+            data = self.rewrite_css(rel, data.decode()).encode()
+        self.save(rel, data)
+        return rel
+
+    def rewrite_css(self, rel, css):
+        def repl(m):
+            url = m.group(2)
+            if url.startswith(("data:", "http:", "https:", "#")):
+                return m.group(0)
+            target = urllib.parse.urljoin("/" + rel, url)
+            path, _, frag = target.partition("#")
+            path = path.split("?")[0]
+            new = relative(rel, self.asset(path)) + (f"#{frag}" if frag else "")
+            return f"url({m.group(1)}{new}{m.group(1)})"
+
+        return re.sub(r"url\((['\"]?)([^'\")]+)\1\)", repl, css)
+
+    def rewrite_link(self, rel, pages, value):
+        if not value.startswith("/") or value.startswith("//"):
+            return value
+        path, _, frag = value.partition("#")
+        path = path.split("?")[0]
+        frag = f"#{frag}" if frag else ""
+        page = path.removeprefix("/docs/").strip("/")
+        if path.startswith("/docs/") and page in pages:
+            return relative(rel, f"{page}.html") + frag
+        if path.startswith(("/assets/", "/webp/", "/img/")) and "." in path:
+            return relative(rel, self.asset(path)) + frag
+        return SITE + value
+
+    def page(self, page, pages):
+        rel = f"{page}.html"
+        print(f"  {page}")
+        doc = fetch(f"{SITE}/docs/{page}").decode()
+
+        doc = re.sub(r"<script\b.*?</script>", "", doc, flags=re.S)
+        doc = re.sub(r"<link[^>]*rel=\"(?:preload|prefetch|preconnect)\"[^>]*>", "", doc)
+        doc = doc.replace("</head>", HIDE_CHROME + "</head>", 1)
+        doc = re.sub(
+            r'\b(href|src)="([^"]*)"',
+            lambda m: f'{m.group(1)}="{html.escape(self.rewrite_link(rel, pages, html.unescape(m.group(2))))}"',
+            doc,
+        )
+        doc = self.index(page, rel, doc)
+        self.save(rel, doc.encode())
+
+    def anchor(self, kind, name):
+        quoted = urllib.parse.quote(name, safe="")
+        return f'<a name="//apple_ref/cpp/{kind}/{quoted}" class="dashAnchor"></a>'
+
+    def index(self, page, rel, doc):
+        title = re.search(r"<h1[^>]*>(.*?)</h1>", doc, re.S)
+        title = html.unescape(re.sub(r"<[^>]+>", "", title.group(1))).strip() if title else page
+        self.entries.append((title, "Guide", rel))
+
+        section = ""
+
+        def repl(m):
+            nonlocal section
+            level, hid, inner = m.group(1), m.group(2), m.group(3)
+            inner = re.sub(r'<a [^>]*class="hash-link".*?</a>', "", inner, flags=re.S)
+            text = html.unescape(re.sub(r"<[^>]+>", "", inner)).strip()
+            if level == "2":
+                section = hid
+                kind, name = "Section", text
+            else:
+                code = re.match(r"\s*<code>(.*?)</code>", inner, re.S)
+                if not code:
+                    kind, name = "Section", text
+                else:
+                    name = html.unescape(re.sub(r"<[^>]+>", "", code.group(1))).strip()
+                    if page in H3_TYPES:
+                        kind = H3_TYPES[page]
+                    elif page.startswith("plugins/"):
+                        kind = "Method" if "(" in name else "Property"
+                    else:
+                        kind = "Section"
+                    name = re.sub(r"\(.*", "", name)
+                    if section and not name.startswith(f"{section}."):
+                        name = f"{section}.{name}"
+            self.entries.append((name, kind, f"{rel}#{hid}"))
+            return self.anchor(kind, name) + m.group(0)
+
+        return re.sub(
+            r'<h([23])[^>]*\bid="([^"]+)"[^>]*>(.*?)</h\1>', repl, doc, flags=re.S
+        )
+
+    def build(self):
+        pages = doc_pages()
+        if not pages:
+            sys.exit("no /docs pages found in the sitemap")
+        shutil.rmtree(self.docset, ignore_errors=True)
+        os.makedirs(self.documents)
+
+        print(f"Fetching {len(pages)} pages from {SITE}/docs")
+        for page in pages:
+            self.page(page, set(pages))
+
+        db = sqlite3.connect(os.path.join(self.contents, "Resources", "docSet.dsidx"))
+        db.execute(
+            "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"
+        )
+        db.execute("CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)")
+        db.executemany(
+            "INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES (?, ?, ?)",
+            self.entries,
+        )
+        db.commit()
+        db.close()
+
+        index = "quick-start.html" if "quick-start" in pages else f"{pages[0]}.html"
+        with open(os.path.join(self.contents, "Info.plist"), "w") as f:
+            f.write(f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key><string>yazi</string>
+	<key>CFBundleName</key><string>{NAME}</string>
+	<key>DocSetPlatformFamily</key><string>yazi</string>
+	<key>DashDocSetKeyword</key><string>yazi</string>
+	<key>DashDocSetFamily</key><string>dashtoc</string>
+	<key>isDashDocset</key><true/>
+	<key>isJavaScriptEnabled</key><true/>
+	<key>dashIndexFilePath</key><string>{index}</string>
+	<key>DashDocSetFallbackURL</key><string>{SITE}/docs/</string>
+</dict>
+</plist>
+""")
+
+        self.icon()
+        print(f"Indexed {len(self.entries)} entries into {self.docset}")
+
+    def icon(self):
+        logo = os.path.join(self.docset, "logo.webp")
+        try:
+            with open(logo, "wb") as f:
+                f.write(fetch(f"{SITE}/webp/logo.webp"))
+            for size, file in ((16, "icon.png"), (32, "icon@2x.png")):
+                subprocess.run(
+                    ["sips", "-s", "format", "png", "-z", str(size), str(size),
+                     logo, "--out", os.path.join(self.docset, file)],
+                    check=True, capture_output=True,
+                )
+        except Exception as e:
+            print(f"  no icon: {e}", file=sys.stderr)
+        finally:
+            if os.path.exists(logo):
+                os.remove(logo)
+
+
+def main():
+    out = sys.argv[1] if len(sys.argv) > 1 else os.path.expanduser("~/.local/share/dash")
+    builder = Builder(out)
+    builder.build()
+    if os.path.isdir("/Applications/Dash.app"):
+        # Opening a docset adds it to Dash (a no-op if it's already added).
+        subprocess.run(["open", "-g", "-a", "Dash", builder.docset])
+
+
+if __name__ == "__main__":
+    main()
