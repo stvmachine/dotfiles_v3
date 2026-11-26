@@ -11,5 +11,9 @@ edit = [
 ]
 
 [[plugin.prepend_previewers]]
+mime = "image/{jpeg,png,webp}"
+run = "zoom 5"
+
+[[plugin.prepend_previewers]]
 url = "*.md"
 run = 'faster-piper -- CLICOLOR_FORCE=1 glow-mermaid "$1" -w=$w -s=dracula'

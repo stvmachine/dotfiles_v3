@@ -13,6 +13,12 @@ on   = "-"
 run  = "plugin zoom -1"
 desc = "Zoom out hovered file"
 
-[[plugin.prepend_previewers]]
-mime = "image/{jpeg,png,webp}"
-run  = "zoom 5"
+[[mgr.prepend_keymap]]
+on   = "J"
+run  = "seek -5"
+desc = "Seek up 5 units in the preview"
+
+[[mgr.prepend_keymap]]
+on   = "K"
+run  = "seek 5"
+desc = "Seek down 5 units in the preview"
