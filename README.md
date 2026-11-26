@@ -159,7 +159,8 @@ Brewfile.
 `~/.config/yazi/` by bootstrap, which then runs `ya pkg install` to fetch the
 plugins pinned in `package.toml` (`toggle-pane`, `zoom`, `piper`,
 `faster-piper`). The plugins themselves aren't committed. Image zoom uses
-ImageMagick from the Brewfile.
+ImageMagick from the Brewfile, and Yazi's built-in PDF preview renders pages
+with `pdftoppm` from poppler.
 
 Markdown previews run `bin/glow-mermaid`, which draws ```` ```mermaid ```` blocks
 as text diagrams with
